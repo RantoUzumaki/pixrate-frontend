@@ -14,7 +14,7 @@ export default function Sidemenu() {
   }, []);
 
   return (
-    <Flex minH={'100vh'} align={'center'} justify={'center'}>
+    <Flex h="100%" align={'center'} justify={'center'}>
       <VStack
         divider={<StackDivider borderColor="gray.200" />}
         spacing={4}
@@ -26,7 +26,7 @@ export default function Sidemenu() {
               <Button
                 bg="gray.300"
                 _hover={{
-                  bg: 'gray.500'
+                  bg: 'gray.500',
                 }}
               >
                 {e.name}

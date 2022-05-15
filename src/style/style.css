@@ -1,3 +1,44 @@
+body {
+  overflow-x: hidden;
+}
+
 nav.css-1bv2ig5 {
-    position: fixed;
+  position: fixed;
+}
+
+.image-picker input {
+  display: none;
+}
+
+.image-picker img {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+}
+
+.image-picker div {
+  position: relative;
+  height: 40px;
+  bottom: 40px;
+  background: rgba(100, 100, 100, 0.3) !important;
+  text-align: center;
+  line-height: 40px;
+  font-size: 13px;
+  color: #f5f5f5;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.image-picker span {
+  font-size: 40px;
+}
+
+.css-13hfw13 {
+  position: fixed;
+  z-index: -1;
+}
+
+.css-3vvs3t {
+  position: relative;
+  left: 25%;
 }
