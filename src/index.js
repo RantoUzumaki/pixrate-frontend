@@ -4,14 +4,16 @@ import App from './App';
 import { ChakraProvider } from '@chakra-ui/react';
 
 import customTheme from './utils/theme';
-import Fonts from './utils/Fonts'
+import Fonts from './utils/Fonts';
 
-import './style/style.css'
+import './style/style.css';
 
 ReactDOM.render(
   <ChakraProvider theme={customTheme}>
     <Fonts />
-    <App />
+    <>
+      <App />
+    </>
   </ChakraProvider>,
   document.getElementById('root')
 );

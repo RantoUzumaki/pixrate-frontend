@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Landing from './pages/Landing';
 import Homepage from './pages/Homepage';
+import Logout from './pages/Logout';
 
 function App() {
   const [validate, setValidate] = useState(false);
@@ -22,11 +23,18 @@ function App() {
   return (
     <Router>
       <Header logval={validate} />
-      <Routes>
-        <Route path="/" element={validate ? <Homepage /> : <Landing />}></Route>
-        <Route path="/login" element={<Login logval={setValidate} />}></Route>
-        <Route path="/signup" element={<Signup />}></Route>
-      </Routes>
+      {validate ? (
+        <Routes>
+          <Route path="/" exact element={<Homepage />} />
+          <Route path="/logout" element={<Logout logval={setValidate} />} />
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path="/" exact element={<Landing />} />
+          <Route path="/login" element={<Login logval={setValidate} />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      )}
     </Router>
   );
 }

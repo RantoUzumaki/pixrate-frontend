@@ -32,7 +32,7 @@ export default function Login(props) {
           JSON.stringify(res.data.user)
         );
         toast({
-          title: `Registeration Successful`,
+          title: `Login Successful`,
           position: 'top-right',
           variant: 'left-accent',
           isClosable: true,

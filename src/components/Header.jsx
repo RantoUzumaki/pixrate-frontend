@@ -75,7 +75,7 @@ const MenuLinks = ({ prop, isOpen }) => {
         {prop.logval ? (
           <>
             <MenuItem>
-              <Text fontWeight='bold' fontSize="2xl">
+              <Text fontWeight="bold" fontSize="2xl">
                 {JSON.parse(userDetails).firstname.toUpperCase()}
               </Text>
             </MenuItem>

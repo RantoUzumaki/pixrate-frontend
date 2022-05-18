@@ -32,6 +32,7 @@ export default function Signup() {
       email: document.getElementById('email').value,
       password: document.getElementById('password').value,
     };
+    console.log(data);
 
     axios
       .post(`${api}/Register`, data)

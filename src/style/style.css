@@ -4,6 +4,7 @@ body {
 
 nav.css-1bv2ig5 {
   position: fixed;
+  z-index: 5;
 }
 
 .image-picker input {
@@ -31,11 +32,6 @@ nav.css-1bv2ig5 {
 
 .image-picker span {
   font-size: 40px;
-}
-
-.css-13hfw13 {
-  position: fixed;
-  z-index: -1;
 }
 
 .css-3vvs3t {
