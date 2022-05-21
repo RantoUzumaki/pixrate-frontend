@@ -32,7 +32,6 @@ export default function Signup() {
       email: document.getElementById('email').value,
       password: document.getElementById('password').value,
     };
-    console.log(data);
 
     axios
       .post(`${api}/Register`, data)
@@ -47,7 +46,15 @@ export default function Signup() {
 
         Router('/login');
       })
-      .catch(err => console.log(err));
+      .catch(() => {
+        toast({
+          title: 'Mail Already Exist!!!',
+          position: 'top-right',
+          variant: 'left-accent',
+          isClosable: true,
+          status: 'error',
+        });
+      });
   }
 
   return (

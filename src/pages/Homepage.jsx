@@ -36,6 +36,8 @@ export default function Homepage() {
   const [filterImage, setFilterImage] = useState([]);
   const [categories, setCategories] = useState([]);
   const [clear, setClear] = useState(false);
+  const [buyer, setBuyer] = useState(false);
+  const [boughtImage, setBoughtImage] = useState([]);
 
   useEffect(() => {
     axios
@@ -58,6 +60,22 @@ export default function Homepage() {
       setFilterImage(userNotImg);
     });
   }, [isOpen]);
+
+  useEffect(() => {
+    let userDetails = localStorage.getItem('userLoggedInDetails');
+    let buyersList = [];
+
+    axios
+      .get(`${api}/get-buyers`, {
+        params: { userId: JSON.parse(userDetails)._id },
+      })
+      .then(res => {
+        res.data.map(e => {
+          buyersList.push(e.image[0]);
+        });
+        setBoughtImage(buyersList);
+      });
+  }, [buyer]);
 
   function filterCategoriesClicked(e) {
     const filterArray = [];
@@ -84,6 +102,17 @@ export default function Homepage() {
     let category = document.getElementById('categoriesId').value;
     let userId = JSON.parse(localStorage.getItem('userLoggedInDetails'))._id;
     let price = document.getElementById('priceInput').value;
+
+    if (!img) {
+      toast({
+        title: `Select an Image`,
+        position: 'top-right',
+        variant: 'left-accent',
+        isClosable: true,
+        status: 'error',
+      });
+      return;
+    }
 
     const data = new FormData();
     data.append('file', img);
@@ -129,6 +158,7 @@ export default function Homepage() {
           isClosable: true,
           status: 'success',
         });
+        setBuyer(!buyer);
       })
       .catch(err => {
         console.log(err);
@@ -313,6 +343,7 @@ export default function Homepage() {
                     ></Box>
                   </Box>
                   <Button
+                    disabled={boughtImage.includes(e._id)}
                     id={e._id}
                     onClick={buyImage}
                     mt={'4'}

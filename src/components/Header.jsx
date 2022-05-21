@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, Box, Flex, Text, Button, Stack } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 import Logo from './Logo';
 
@@ -59,6 +60,7 @@ const MenuItem = ({ children, isLast, to, ...rest }) => {
 
 const MenuLinks = ({ prop, isOpen }) => {
   let userDetails = localStorage.getItem('userLoggedInDetails');
+  const Router = new useNavigate();
 
   return (
     <Box
@@ -75,7 +77,11 @@ const MenuLinks = ({ prop, isOpen }) => {
         {prop.logval ? (
           <>
             <MenuItem>
-              <Text fontWeight="bold" fontSize="2xl">
+              <Text
+                fontWeight="bold"
+                fontSize="2xl"
+                onClick={() => Router('/profile')}
+              >
                 {JSON.parse(userDetails).firstname.toUpperCase()}
               </Text>
             </MenuItem>

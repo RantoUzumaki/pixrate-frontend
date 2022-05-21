@@ -7,6 +7,7 @@ import Signup from './pages/Signup';
 import Landing from './pages/Landing';
 import Homepage from './pages/Homepage';
 import Logout from './pages/Logout';
+import Profile from './pages/Profile';
 
 function App() {
   const [validate, setValidate] = useState(false);
@@ -27,6 +28,7 @@ function App() {
         <Routes>
           <Route path="/" exact element={<Homepage />} />
           <Route path="/logout" element={<Logout logval={setValidate} />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       ) : (
         <Routes>

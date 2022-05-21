@@ -38,10 +38,18 @@ export default function Login(props) {
           isClosable: true,
           status: 'success',
         });
-        props.logval(true)
+        props.logval(true);
         Router('/');
       })
-      .catch(err => console.log(err));
+      .catch(() => {
+        toast({
+          title: `Invalid Credentials`,
+          position: 'top-right',
+          variant: 'left-accent',
+          isClosable: true,
+          status: 'error',
+        });
+      });
   }
 
   return (
