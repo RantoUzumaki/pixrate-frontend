@@ -6,12 +6,19 @@ import Logo from './Logo';
 
 const NavBar = props => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const Router = new useNavigate();
 
   const toggle = () => setIsOpen(!isOpen);
 
   return (
     <NavBarContainer>
-      <Logo w="200px" color="BlackAlpha.800" />
+      <Logo
+        w="200px"
+        color="BlackAlpha.800"
+        onClick={() => Router('/')}
+        cursor={'pointer'}
+        userSelect={'none'}
+      />
       <MenuToggle toggle={toggle} isOpen={isOpen} />
       <MenuLinks prop={props} isOpen={isOpen} />
     </NavBarContainer>
