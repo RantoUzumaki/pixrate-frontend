@@ -11,17 +11,23 @@ import {
   Tab,
   TabPanel,
   Flex,
+  Button,
+  Input,
 } from '@chakra-ui/react';
+import { EditIcon } from '@chakra-ui/icons';
 import React, { useState, useEffect } from 'react';
+import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { api, image_api } from '../utils/api';
 
 export default function Profile() {
   let userDetails = JSON.parse(localStorage.getItem('userLoggedInDetails'));
+  const toast = useToast();
 
   const [buyImage, setBuyImage] = useState([]);
   const [images, setImages] = useState([]);
   const [boughtImage, setBoughtImage] = useState([]);
+  const [editImagePrice, setEditImagePrice] = useState(false);
 
   useEffect(() => {
     let userDetails = localStorage.getItem('userLoggedInDetails');
@@ -36,7 +42,7 @@ export default function Profile() {
       setBuyImage(res.data);
       setImages(userNotImg);
     });
-  }, []);
+  }, [editImagePrice]);
 
   useEffect(() => {
     let userDetails = localStorage.getItem('userLoggedInDetails');
@@ -53,6 +59,45 @@ export default function Profile() {
         setBoughtImage(buyersList);
       });
   }, []);
+
+  function editImage(e) {
+    axios
+      .post(`${api}/edit-image`, {
+        imageid: e.target.id,
+        price: document.getElementById('imagePriceEdited').value,
+      })
+      .then(res => {
+        toast({
+          title: `${res.data.message} Successfully`,
+          position: 'top-right',
+          variant: 'left-accent',
+          isClosable: true,
+          status: 'success',
+        });
+        setEditImagePrice(false);
+      })
+      .catch(err => console.error(err));
+  }
+
+  function deleteImage(e) {
+    let confm = window.confirm('Are you sure you want to delete?');
+
+    if (!confm) return;
+
+    axios
+      .delete(`${api}/delete-image`, { data: { imageid: e.target.id } })
+      .then(res => {
+        toast({
+          title: `${res.data.message}`,
+          position: 'top-right',
+          variant: 'left-accent',
+          isClosable: true,
+          status: 'success',
+        });
+        setEditImagePrice(false);
+      })
+      .catch(err => console.error(err));
+  }
 
   return (
     <Container w={'100vw'} pos={'relative'} top={'100px'} overflowX={'hidden'}>
@@ -148,6 +193,50 @@ export default function Profile() {
                         top={'0'}
                       ></Box>
                     </Box>
+                  </Flex>
+                  {editImagePrice ? (
+                    <Input
+                      id="imagePriceEdited"
+                      mt={'1em'}
+                      placeholder={e.price}
+                    />
+                  ) : (
+                    <Flex
+                      mt={'1em'}
+                      justifyContent={'space-between'}
+                      alignItems={'center'}
+                    >
+                      <Text fontSize={'1.25em'}>
+                        Price -
+                        <span
+                          style={{ fontWeight: '600' }}
+                        >{` Rs.${e.price}.00`}</span>
+                      </Text>
+                      <EditIcon
+                        w={'20px'}
+                        h={'20px'}
+                        cursor={'pointer'}
+                        color={'grey.400'}
+                        onClick={() => setEditImagePrice(true)}
+                      />
+                    </Flex>
+                  )}
+                  <Flex pt={'1.5em'} justifyContent={'space-between'}>
+                    <Button
+                      disabled={!editImagePrice}
+                      id={e._id}
+                      colorScheme={'yellow'}
+                      onClick={editImage}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      id={e._id}
+                      colorScheme={'red'}
+                      onClick={deleteImage}
+                    >
+                      Delete
+                    </Button>
                   </Flex>
                 </Box>
               );
