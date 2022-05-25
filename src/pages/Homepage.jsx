@@ -19,6 +19,7 @@ import {
   Tooltip,
   StackDivider,
   CloseButton,
+  HStack,
 } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
@@ -38,6 +39,7 @@ export default function Homepage() {
   const [clear, setClear] = useState(false);
   const [buyer, setBuyer] = useState(false);
   const [boughtImage, setBoughtImage] = useState([]);
+  const [popup, setPopup] = useState(false);
 
   useEffect(() => {
     axios
@@ -286,80 +288,206 @@ export default function Homepage() {
         >
           {filterImage.map(e => {
             return (
-              <Box
-                w={'95%'}
-                rounded={'lg'}
-                bg="white"
-                boxShadow={'0 0px 10px 0px rgb(0 0 0 / 20%)'}
-                p={8}
-                key={e._id}
-                pos={'relative'}
-              >
-                <Flex flexDir={'column'}>
-                  <Flex mb={'4'} align={'center'}>
+              <>
+                <Box
+                  w={'95%'}
+                  rounded={'lg'}
+                  bg="white"
+                  boxShadow={'0 0px 10px 0px rgb(0 0 0 / 20%)'}
+                  p={8}
+                  key={e._id}
+                  pos={'relative'}
+                >
+                  <Flex flexDir={'column'}>
+                    <Flex mb={'4'} align={'center'}>
+                      <Box
+                        mr={'4'}
+                        w={'40px'}
+                        h={'40px'}
+                        borderRadius={'100%'}
+                        bg={'yellow.400'}
+                        pos={'relative'}
+                      >
+                        <Text
+                          pos={'absolute'}
+                          top={'50%'}
+                          left={'50%'}
+                          transform={'translate(-50%, -50%)'}
+                          fontWeight={'700'}
+                        >
+                          {e.user[0].firstname.charAt(0).toUpperCase()}
+                        </Text>
+                      </Box>
+                      <Text fontWeight={'600'}>
+                        {e.user[0].firstname.toUpperCase()}
+                      </Text>
+                    </Flex>
+                    <Box pos={'relative'} overflow={'hidden'} mb={'3.5em'}>
+                      <Box
+                        background={`url(${image_api}/${e.image_name}) center no-repeat`}
+                        backgroundSize={'contain'}
+                        filter={'none'}
+                        zIndex={'2'}
+                        pos={'relative'}
+                        maxW={'100%'}
+                        h={'400px'}
+                        m={'0 auto'}
+                        boxShadow={'0 20px 40px #000'}
+                      ></Box>
+                      <Box
+                        background={`linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0, 0.3) ),  url(${image_api}/${e.image_name}) center no-repeat`}
+                        backgroundSize={'cover'}
+                        filter={'blur(5px)'}
+                        w={'100%'}
+                        h={'400px'}
+                        pos={'absolute'}
+                        zIndex={'1'}
+                        top={'0'}
+                      ></Box>
+                    </Box>
+                    <Button
+                      disabled={boughtImage.includes(e._id)}
+                      onClick={() => {
+                        setPopup(true);
+                        document.getElementById('root').style.overflowY =
+                          'hidden';
+                      }}
+                      mt={'4'}
+                      w={'0'}
+                      p={'1em 4.5em'}
+                      bg={'yellow.300'}
+                      pos={'absolute'}
+                      bottom={'2em'}
+                      right={'2em'}
+                      _hover={{
+                        bg: 'yellow.400',
+                        boxShadow: '0 0 5px 2px rgba(0,0,0,0.5)',
+                      }}
+                    >{`Buy - Rs.${e.price}.00`}</Button>
+                  </Flex>
+                </Box>
+                {popup && (
+                  <Flex
+                    pos={'absolute'}
+                    w={'100%'}
+                    h={'100vh'}
+                    top={'0'}
+                    left={'0'}
+                    right={'0'}
+                    bottom={'0'}
+                    zIndex={'10'}
+                    bg={'rgba(0,0,0,0.3)'}
+                    justify={'center'}
+                    align={'center'}
+                  >
                     <Box
-                      mr={'4'}
-                      w={'40px'}
-                      h={'40px'}
-                      borderRadius={'100%'}
-                      bg={'yellow.400'}
+                      bg={'white'}
+                      w={'25vw'}
+                      h={'max-content'}
+                      borderRadius={'10px'}
+                      p={'2em'}
                       pos={'relative'}
                     >
-                      <Text
+                      <Button
+                        bg={'black'}
+                        color={'white'}
+                        borderRadius={'100%'}
                         pos={'absolute'}
-                        top={'50%'}
-                        left={'50%'}
-                        transform={'translate(-50%, -50%)'}
-                        fontWeight={'700'}
+                        right={'-1em'}
+                        top={'-1em'}
+                        onClick={() => {
+                          setPopup(false);
+                          window.location.reload();
+                        }}
                       >
-                        {e.user[0].firstname.charAt(0).toUpperCase()}
-                      </Text>
+                        X
+                      </Button>
+                      <Text>Enter Card Owner Name</Text>
+                      <Input
+                        isRequired
+                        variant="filled"
+                        placeholder="Card Owner Name"
+                        bg={'blackAlpha.700'}
+                        color={'white'}
+                        _hover={{
+                          bg: 'blackAlpha.800',
+                        }}
+                        _focus={{
+                          bg: 'blackAlpha.800',
+                        }}
+                        mb={'10px'}
+                      />
+                      <Text>Enter Card Number</Text>
+                      <Input
+                        isRequired
+                        type={'number'}
+                        variant="filled"
+                        placeholder="Card Number"
+                        bg={'blackAlpha.700'}
+                        color={'white'}
+                        _hover={{
+                          bg: 'blackAlpha.800',
+                        }}
+                        _focus={{
+                          bg: 'blackAlpha.800',
+                        }}
+                        mb={'10px'}
+                      />
+                      <HStack>
+                        <VStack>
+                          <Text>Enter Expirey Date</Text>
+                          <Input
+                            isRequired
+                            type={'number'}
+                            variant="filled"
+                            placeholder="Expirey Date"
+                            bg={'blackAlpha.700'}
+                            color={'white'}
+                            _hover={{
+                              bg: 'blackAlpha.800',
+                            }}
+                            _focus={{
+                              bg: 'blackAlpha.800',
+                            }}
+                            mr={'4%'}
+                          />
+                        </VStack>
+                        <VStack>
+                          <Text>Enter CVV Number</Text>
+                          <Input
+                            isRequired
+                            type={'number'}
+                            variant="filled"
+                            placeholder="CVV Number"
+                            bg={'blackAlpha.700'}
+                            color={'white'}
+                            _hover={{
+                              bg: 'blackAlpha.800',
+                            }}
+                            _focus={{
+                              bg: 'blackAlpha.800',
+                            }}
+                          />
+                        </VStack>
+                      </HStack>
+                      <Button
+                        id={e._id}
+                        onClick={buyImage}
+                        mt={'4'}
+                        w={'0'}
+                        p={'1em 4.5em'}
+                        bg={'yellow.300'}
+                        _hover={{
+                          bg: 'yellow.400',
+                          boxShadow: '0 0 5px 2px rgba(0,0,0,0.5)',
+                        }}
+                      >
+                        Purchase
+                      </Button>
                     </Box>
-                    <Text fontWeight={'600'}>
-                      {e.user[0].firstname.toUpperCase()}
-                    </Text>
                   </Flex>
-                  <Box pos={'relative'} overflow={'hidden'} mb={'3.5em'}>
-                    <Box
-                      background={`url(${image_api}/${e.image_name}) center no-repeat`}
-                      backgroundSize={'contain'}
-                      filter={'none'}
-                      zIndex={'2'}
-                      pos={'relative'}
-                      maxW={'100%'}
-                      h={'400px'}
-                      m={'0 auto'}
-                      boxShadow={'0 20px 40px #000'}
-                    ></Box>
-                    <Box
-                      background={`linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0, 0.3) ),  url(${image_api}/${e.image_name}) center no-repeat`}
-                      backgroundSize={'cover'}
-                      filter={'blur(5px)'}
-                      w={'100%'}
-                      h={'400px'}
-                      pos={'absolute'}
-                      zIndex={'1'}
-                      top={'0'}
-                    ></Box>
-                  </Box>
-                  <Button
-                    disabled={boughtImage.includes(e._id)}
-                    id={e._id}
-                    onClick={buyImage}
-                    mt={'4'}
-                    w={'0'}
-                    p={'1em 4.5em'}
-                    bg={'yellow.300'}
-                    pos={'absolute'}
-                    bottom={'2em'}
-                    right={'2em'}
-                    _hover={{
-                      bg: 'yellow.400',
-                      boxShadow: '0 0 5px 2px rgba(0,0,0,0.5)',
-                    }}
-                  >{`Buy - Rs.${e.price}.00`}</Button>
-                </Flex>
-              </Box>
+                )}
+              </>
             );
           })}
         </SimpleGrid>
