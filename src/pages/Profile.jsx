@@ -27,7 +27,8 @@ export default function Profile() {
   const [buyImage, setBuyImage] = useState([]);
   const [images, setImages] = useState([]);
   const [boughtImage, setBoughtImage] = useState([]);
-  const [editImagePrice, setEditImagePrice] = useState(false);
+  const [idEdit, setIdEdit] = useState(null);
+  const [editImagePrice, setEditImagePrice] = useState(-1);
 
   useEffect(() => {
     let userDetails = localStorage.getItem('userLoggedInDetails');
@@ -58,7 +59,7 @@ export default function Profile() {
         });
         setBoughtImage(buyersList);
       });
-  }, []);
+  }, [editImagePrice]);
 
   function editImage(e) {
     axios
@@ -94,7 +95,7 @@ export default function Profile() {
           isClosable: true,
           status: 'success',
         });
-        setEditImagePrice(false);
+        setEditImagePrice(-1);
       })
       .catch(err => console.error(err));
   }
@@ -157,7 +158,7 @@ export default function Profile() {
         <TabPanels>
           <TabPanel>
             {images.length === 0 && <Text>No Images Uploaded</Text>}
-            {images.map(e => {
+            {images.map((e, idx) => {
               return (
                 <Box
                   w={'95%'}
@@ -194,7 +195,7 @@ export default function Profile() {
                       ></Box>
                     </Box>
                   </Flex>
-                  {editImagePrice ? (
+                  {editImagePrice === idx ? (
                     <Input
                       id="imagePriceEdited"
                       mt={'1em'}
@@ -217,13 +218,15 @@ export default function Profile() {
                         h={'20px'}
                         cursor={'pointer'}
                         color={'grey.400'}
-                        onClick={() => setEditImagePrice(true)}
+                        onClick={() => {
+                          setEditImagePrice(idx);
+                        }}
                       />
                     </Flex>
                   )}
                   <Flex pt={'1.5em'} justifyContent={'space-between'}>
                     <Button
-                      disabled={!editImagePrice}
+                      {...(editImagePrice === idx) ? 'disabled' : 'enabled'}
                       id={e._id}
                       colorScheme={'yellow'}
                       onClick={editImage}

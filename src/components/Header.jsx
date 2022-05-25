@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Box, Flex, Text, Button, Stack } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import Logo from './Logo';
 
@@ -8,21 +8,27 @@ const NavBar = props => {
   const [isOpen, setIsOpen] = React.useState(false);
   const Router = new useNavigate();
 
+  const location = new useLocation();
+
   const toggle = () => setIsOpen(!isOpen);
 
-  return (
-    <NavBarContainer>
-      <Logo
-        w="200px"
-        color="BlackAlpha.800"
-        onClick={() => Router('/')}
-        cursor={'pointer'}
-        userSelect={'none'}
-      />
-      <MenuToggle toggle={toggle} isOpen={isOpen} />
-      <MenuLinks prop={props} isOpen={isOpen} />
-    </NavBarContainer>
-  );
+  if (location.pathname === '/admin/dashboard') {
+    return <></>;
+  } else {
+    return (
+      <NavBarContainer>
+        <Logo
+          w="200px"
+          color="BlackAlpha.800"
+          onClick={() => Router('/')}
+          cursor={'pointer'}
+          userSelect={'none'}
+        />
+        <MenuToggle toggle={toggle} isOpen={isOpen} />
+        <MenuLinks prop={props} isOpen={isOpen} />
+      </NavBarContainer>
+    );
+  }
 };
 
 const CloseIcon = () => (

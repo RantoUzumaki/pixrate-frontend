@@ -8,6 +8,7 @@ import Landing from './pages/Landing';
 import Homepage from './pages/Homepage';
 import Logout from './pages/Logout';
 import Profile from './pages/Profile';
+import Admin from './pages/admin/Admin';
 
 function App() {
   const [validate, setValidate] = useState(false);
@@ -37,6 +38,9 @@ function App() {
           <Route path="/signup" element={<Signup />} />
         </Routes>
       )}
+      <Routes>
+        <Route path="/admin/dashboard" exact element={<Admin />} />
+      </Routes>
     </Router>
   );
 }
